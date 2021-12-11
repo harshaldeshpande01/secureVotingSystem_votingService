@@ -16,7 +16,7 @@ app.get('/', (_req, res) => {
 
 app.use('/api/elections', electionRoutes);
 
-const CONNECTION_URL = 'mongodb+srv://Admin:harshal@cluster0.l9h47.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const CONNECTION_URL = 'mongodb+srv://Admin:3Sg3RLt8G1wdmTT6@cluster0.l9h47.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const PORT = process.env.PORT|| 5000;
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })

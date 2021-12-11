@@ -16,6 +16,15 @@ exports.getElections = async (req, res) => {
     }
 }
 
+exports.getAllElections = async (req, res) => {
+    try {    
+        const elections = await Election.find({});
+        res.json({data: elections});
+    } catch (error) {    
+        res.status(404).json({ message: error.message });
+    }
+}
+
 exports.getElectionsBySearch = async (req, res) => {
     let { searchQuery, tags } = req.query;
     try {
