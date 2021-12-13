@@ -40,7 +40,11 @@ exports.getElection = async (req, res) => {
     const { id } = req.params;
     try {
         const election = await Election.findOne({ _id: id })
-        res.status(200).json({election});
+        let isAdmin = false;
+        if(election.creator.toString() == req.uid) {
+            isAdmin = true;
+        }
+        res.status(200).json({election, isAdmin});
     } catch (error) {
         res.status(404).json({ message: 'Document does not exist' });
     }
@@ -48,11 +52,12 @@ exports.getElection = async (req, res) => {
 
 exports.createElection = async (req, res) => {
     const {title, description, creator, phase, tags, candidates} = req.body;
+    const uid = req.uid;
 
     const newElection = new Election({ 
         title,
         description,
-        creator,
+        creator: uid,
         phase,
         tags,
         candidates, 

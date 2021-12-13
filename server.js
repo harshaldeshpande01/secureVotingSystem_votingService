@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -16,7 +18,7 @@ app.get('/', (_req, res) => {
 
 app.use('/api/elections', electionRoutes);
 
-const CONNECTION_URL = 'mongodb+srv://Admin:3Sg3RLt8G1wdmTT6@cluster0.l9h47.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const CONNECTION_URL = 'mongodb://Admin:3Sg3RLt8G1wdmTT6@cluster0-shard-00-00.l9h47.mongodb.net:27017,cluster0-shard-00-01.l9h47.mongodb.net:27017,cluster0-shard-00-02.l9h47.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority'
 const PORT = process.env.PORT|| 5000;
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
