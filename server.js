@@ -9,7 +9,7 @@ const createError = require('http-errors');
 const mongoose = require('mongoose');
 
 const electionRoutes = require('./routes/election.js');
-const refreshRoute = require('./routes/refresh.js');
+// const refreshRoute = require('./routes/refresh.js');
 
 const app = express();
 
@@ -25,7 +25,7 @@ app.use(cors());
 app.use(helmet());
 
 app.use('/api/elections', electionRoutes);
-app.use('/api/refresh', refreshRoute);
+// app.use('/api/refresh', refreshRoute);
 
 // Handle 404's
 app.use(async (req, res, next) => {
