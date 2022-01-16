@@ -27,20 +27,40 @@ app.use(helmet());
 app.use('/api/elections', electionRoutes);
 // app.use('/api/refresh', refreshRoute);
 
-// Handle 404's
-app.use(async (req, res, next) => {
-  next(createError.NotFound())
-})
+// catch 404 and forward to error handler
+// note this is after all good routes and is not an error handler
+// to get a 404, it has to fall through to this route - no error involved
+app.use(function(req, res, next) {
+  var err = new Error('Page not Found');
+  err.status = 404;
+  next(err);
+});
 
-app.use((err, req, res, next) => {
-  res.status(err.status || 500)
-  res.send({
-    error: {
-      status: err.status || 500,
+// error handlers - these take err object.
+// these are per request error handlers.  They have two so in dev
+// you get a full stack trace.  In prod, first is never setup
+
+// development error handler
+// will print stacktrace
+if (process.env.NODE_ENV === 'development') {
+  app.use(function(err, req, res, next) {
+      res.status(err.status || 500);
+      res.render('error', {
+          message: err.message,
+          error: err
+      });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
       message: err.message,
-    },
-  })
-})
+      error: {}
+  });
+});
 
 const CONNECTION_URL = process.env.DATABASE_URL
 const PORT = process.env.PORT || 5000;

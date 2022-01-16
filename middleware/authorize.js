@@ -7,6 +7,7 @@ const verifyOptions = {
 
 exports.authorizeRequest = async (req, res, next) => {
   let token;
+  console.log('h1')
 
   if (
     req.headers.authorization &&

@@ -1,0 +1,5 @@
+# GET http://localhost:5000/api/elections?title=n&page=3 HTTP/1.1
+# content-type: application/json
+
+DELETE http://localhost:5000/api/elections/61e10cacec9d264187fa3795 HTTP/1.1
+content-type: application/json

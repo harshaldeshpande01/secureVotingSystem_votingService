@@ -4,14 +4,14 @@ const {
 	authorizeRequest
 } = require("../middleware/authorize");
 
-const { getAllElections, getElections, getElectionsBySearch, getElection, createElection } = require('../controllers/election.js');
+const { getAllElections, getElections, getElection, createElection, deleteElection } = require('../controllers/election.js');
 
 const router = express.Router();
 
-router.get('/search', authorizeRequest, getElectionsBySearch);
-router.get('/' , authorizeRequest, getElections);
-router.get('/all' , authorizeRequest, getAllElections);
-router.get('/:id' , authorizeRequest, getElection);
-router.post('/' , authorizeRequest, createElection);
+router.get('/', authorizeRequest, getElections);
+router.get('/all', authorizeRequest, getAllElections);
+router.get('/:id', authorizeRequest, getElection);
+router.post('/', authorizeRequest, createElection);
+router.delete('/:id', authorizeRequest, deleteElection);
 
 module.exports = router;
