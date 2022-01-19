@@ -9,7 +9,9 @@ const createError = require('http-errors');
 const mongoose = require('mongoose');
 
 const electionRoutes = require('./routes/election.js');
-// const refreshRoute = require('./routes/refresh.js');
+const registerRoutes = require('./routes/register.js');
+const votingPhaseRoutes = require('./routes/votingPhase.js');
+const endElectionRoutes = require('./routes/endElection.js');
 
 const app = express();
 
@@ -25,7 +27,9 @@ app.use(cors());
 app.use(helmet());
 
 app.use('/api/elections', electionRoutes);
-// app.use('/api/refresh', refreshRoute);
+app.use('/api/register', registerRoutes);
+app.use('/api/startVotingPhase', votingPhaseRoutes);
+app.use('/api/endElection', endElectionRoutes);
 
 // catch 404 and forward to error handler
 // note this is after all good routes and is not an error handler
@@ -65,6 +69,6 @@ app.use(function(err, req, res, next) {
 const CONNECTION_URL = process.env.DATABASE_URL
 const PORT = process.env.PORT || 5000;
 
-mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(CONNECTION_URL)
   .then(() => app.listen(PORT))
   .catch((error) => console.log(`${error} did not connect`));

@@ -5,6 +5,7 @@ const {
 } = require("../middleware/authorize");
 
 const { getAllElections, getElections, getElection, createElection, deleteElection } = require('../controllers/election.js');
+const res = require('express/lib/response');
 
 const router = express.Router();
 

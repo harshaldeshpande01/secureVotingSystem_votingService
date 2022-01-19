@@ -45,16 +45,18 @@ exports.getElection = async (req, res) => {
         if(election.creator.toString() == req.uid) {
             isAdmin = true;
         }
-        res.status(200).json({election, isAdmin});
+        let isRegistered = false;
+        if(election.registeredVoters.includes(req.uid)) {
+            isRegistered = true;
+        }
+        res.status(200).json({election, isAdmin, isRegistered});
     } catch (error) {
         res.status(404).json({ message: 'Document does not exist' });
     }
 }
 
 exports.deleteElection = async (req, res) => { 
-    console.log('here')
     const { id } = req.params;
-    console.log(id, req.uid)
     try {
         const election = await Election.findOne({ _id: id })
         let isAdmin = false;
@@ -90,5 +92,62 @@ exports.createElection = async (req, res) => {
         res.status(201).json(newElection);
     } catch (error) {
         res.status(409).json({ message: error.message });
+    }
+}
+
+
+exports.registerVoter = async (req, res) => {
+    console.log("here")
+    const { id } = req.params;
+    const uid = req.uid;    
+    try {
+        const election = await Election.findOne({ _id: id })
+        election.registeredVoters.push(uid);
+        await election.save();
+        res.status(200).json({ message: "Registered voter succesfully" });
+    } catch (error) {
+        res.status(409).json({ message: error.message });
+    }
+}
+
+exports.startVotingPhase = async (req, res) => { 
+    const { id } = req.params;
+    try {
+        const election = await Election.findOne({ _id: id })
+        let isAdmin = false;
+        if(election.creator.toString() == req.uid) {
+            isAdmin = true;
+        }
+        if(isAdmin) {
+            election.phase = 'voting';
+            await election.save();
+            res.status(200).json({"success": true});
+        }
+        else {
+            res.status(400).json({"message": "Only admin can change phase"});
+        }
+    } catch (error) {
+        res.status(400).json({ message: 'Document does not exist' });
+    }
+}
+
+exports.endElection = async (req, res) => { 
+    const { id } = req.params;
+    try {
+        const election = await Election.findOne({ _id: id })
+        let isAdmin = false;
+        if(election.creator.toString() == req.uid) {
+            isAdmin = true;
+        }
+        if(isAdmin) {
+            election.phase = 'results';
+            await election.save();
+            res.status(200).json({"success": true});
+        }
+        else {
+            res.status(400).json({"message": "Only admin can change phase"});
+        }
+    } catch (error) {
+        res.status(400).json({ message: 'Document does not exist' });
     }
 }
