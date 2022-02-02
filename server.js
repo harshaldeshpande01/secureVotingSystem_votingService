@@ -12,6 +12,7 @@ const electionRoutes = require('./routes/election.js');
 const registerRoutes = require('./routes/register.js');
 const votingPhaseRoutes = require('./routes/votingPhase.js');
 const endElectionRoutes = require('./routes/endElection.js');
+const voteConfirmedRoutes = require('./routes/voteConfirmed.js');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api/elections', electionRoutes);
 app.use('/api/register', registerRoutes);
 app.use('/api/startVotingPhase', votingPhaseRoutes);
 app.use('/api/endElection', endElectionRoutes);
+app.use('/api/voteConfirmed', voteConfirmedRoutes);
 
 // catch 404 and forward to error handler
 // note this is after all good routes and is not an error handler

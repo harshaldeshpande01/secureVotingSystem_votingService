@@ -7,7 +7,6 @@ const verifyOptions = {
 
 exports.authorizeRequest = async (req, res, next) => {
   let token;
-  console.log(1)
 
   if (
     req.headers.authorization &&
@@ -26,16 +25,15 @@ exports.authorizeRequest = async (req, res, next) => {
       Buffer.from(process.env.ACCESS_PUBLIC , 'base64').toString('ascii'),
       verifyOptions
     );
-    console.log(decoded)
     if(decoded) {
         req.uid = decoded.id;
+        req.umail = decoded.email;
         next();
     }
     else {
       return res.status(401).send("Not authorized to access this router");
     }
   } catch (err) {
-    console.log(err)
     return res.status(401).send("Not authorized to access this router");
   }
 };

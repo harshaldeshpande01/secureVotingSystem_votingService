@@ -97,7 +97,6 @@ exports.createElection = async (req, res) => {
 
 
 exports.registerVoter = async (req, res) => {
-    console.log("here")
     const { id } = req.params;
     const uid = req.uid;    
     try {
@@ -121,6 +120,9 @@ exports.startVotingPhase = async (req, res) => {
         if(isAdmin) {
             election.phase = 'voting';
             await election.save();
+            // election.registeredVoters.map(voter => {
+            //     const election = await Election.findOne({ _id: id })
+            // })
             res.status(200).json({"success": true});
         }
         else {
