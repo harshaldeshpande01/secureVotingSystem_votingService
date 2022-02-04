@@ -1,4 +1,5 @@
 const Election = require('../models/Election.js');
+const sendEmail = require("../utils/mail");
 
 exports.getElections = async (req, res) => {
     const { page, title } = req.query;
@@ -98,10 +99,12 @@ exports.createElection = async (req, res) => {
 
 exports.registerVoter = async (req, res) => {
     const { id } = req.params;
-    const uid = req.uid;    
+    const uid = req.uid; 
+    const umail = req.umail;   
     try {
         const election = await Election.findOne({ _id: id })
         election.registeredVoters.push(uid);
+        election.registeredEmails.push(umail);
         await election.save();
         res.status(200).json({ message: "Registered voter succesfully" });
     } catch (error) {
@@ -120,9 +123,24 @@ exports.startVotingPhase = async (req, res) => {
         if(isAdmin) {
             election.phase = 'voting';
             await election.save();
-            // election.registeredVoters.map(voter => {
-            //     const election = await Election.findOne({ _id: id })
-            // })
+            election.registeredEmails.map(mailid => {
+                console.log(`Sending mail to ${mailid}`)
+                const url = `http://secure-voting-system-frontend-next-js.vercel.app/login`;
+                const message = `
+                    <p>Dear User, Voting for the election ${election.title} which you had registered for, has started. Please visit our platform to submit your vote</p>
+                    <a href=${url} clicktracking=off>${url}</a>
+                `;
+                try{
+                    sendEmail({
+                        to: mailid,
+                        subject: 'Voting has started!!',
+                        text: message
+                    });
+                }
+                catch(err) {
+                    console.log(err);
+                }
+            })
             res.status(200).json({"success": true});
         }
         else {
