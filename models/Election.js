@@ -9,6 +9,7 @@ const electionSchema = mongoose.Schema({
     candidates: [String],
     registeredVoters: [String],
     registeredEmails: [String],
+    alreadyVoted: [String],
     createdAt: {
         type: Date,
         default: new Date(),

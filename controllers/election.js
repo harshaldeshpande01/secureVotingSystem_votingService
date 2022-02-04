@@ -50,7 +50,11 @@ exports.getElection = async (req, res) => {
         if(election.registeredVoters.includes(req.uid)) {
             isRegistered = true;
         }
-        res.status(200).json({election, isAdmin, isRegistered});
+        let alreadyVoted = false;
+        if(election.alreadyVoted.includes(req.uid)) {
+            alreadyVoted = true;
+        }
+        res.status(200).json({election, isAdmin, isRegistered, alreadyVoted});
     } catch (error) {
         res.status(404).json({ message: 'Document does not exist' });
     }
