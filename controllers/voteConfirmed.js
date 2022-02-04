@@ -3,7 +3,7 @@ const sendEmail = require("../utils/mail");
 exports.voteConfirmed = async (req, res) => {
     const { txn } = req.body;
     const email = req.umail;
-    console.log(email);
+    // console.log(email);
     const url = `https://rinkeby.etherscan.io/tx/${txn}`;
     const message = `
         <p>Your vote has been successfully recorded on the blockchain. Follow this URL to review your transaction</p>

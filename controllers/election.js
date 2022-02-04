@@ -124,7 +124,7 @@ exports.startVotingPhase = async (req, res) => {
             election.phase = 'voting';
             await election.save();
             election.registeredEmails.map(mailid => {
-                console.log(`Sending mail to ${mailid}`)
+                // console.log(`Sending mail to ${mailid}`)
                 const url = `http://secure-voting-system-frontend-next-js.vercel.app/login`;
                 const message = `
                     <p>Dear User, Voting for the election ${election.title} which you had registered for, has started. Please visit our platform to submit your vote</p>
